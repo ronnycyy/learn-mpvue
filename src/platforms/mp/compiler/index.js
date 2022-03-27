@@ -6,13 +6,15 @@ import codeGenSwan from './swan/index'
 import codeGenTt from './tt/index'
 import codeGenMy from './my/index'
 
-function compileToMPML (compiled, options, fileExt) {
+
+function compileToMPML(compiled, options, fileExt) {
   let code
   switch (fileExt.platform) {
     case 'swan':
       code = codeGenSwan(compiled, options)
       break
     case 'wx':
+      // vue template 转 wxml
       code = codeGenWx(compiled, options)
       break
     case 'tt':

@@ -4,7 +4,7 @@ import { def } from 'core/util/index'
 
 const KEY_SEP = '_'
 
-function getDeepData (keyList, viewData) {
+function getDeepData(keyList, viewData) {
   if (keyList.length > 1) {
     const _key = keyList.splice(0, 1)
     const _viewData = viewData[_key]
@@ -22,7 +22,7 @@ function getDeepData (keyList, viewData) {
   }
 }
 
-function deepDiff (oldData, newData, data, key) {
+function deepDiff(oldData, newData, data, key) {
   if (oldData === newData) {
     return
   }
@@ -73,7 +73,7 @@ function deepDiff (oldData, newData, data, key) {
   }
 }
 
-function compareAndSetDeepData (key, newData, vm, data) {
+function compareAndSetDeepData(key, newData, vm, data) {
   // 比较引用类型数据
   try {
     const keyList = key.split('.')
@@ -89,7 +89,7 @@ function compareAndSetDeepData (key, newData, vm, data) {
   }
 }
 
-function cleanKeyPath (vm) {
+function cleanKeyPath(vm) {
   if (vm.__mpKeyPath) {
     Object.keys(vm.__mpKeyPath).forEach((_key) => {
       delete vm.__mpKeyPath[_key]['__keyPath']
@@ -97,10 +97,10 @@ function cleanKeyPath (vm) {
   }
 }
 
-function minifyDeepData (rootKey, originKey, vmData, data, _mpValueSet, vm) {
+function minifyDeepData(rootKey, originKey, vmData, data, _mpValueSet, vm) {
   try {
     if (vmData instanceof Array) {
-       // 数组
+      // 数组
       compareAndSetDeepData(rootKey + '.' + originKey, vmData, vm, data)
     } else {
       // Object
@@ -126,7 +126,7 @@ function minifyDeepData (rootKey, originKey, vmData, data, _mpValueSet, vm) {
             }
           }
         })
-         // 根节点可能有父子引用同一个引用类型数据，依赖树都遍历完后清理
+        // 根节点可能有父子引用同一个引用类型数据，依赖树都遍历完后清理
         vm['__mpKeyPath'] = vm['__mpKeyPath'] || {}
         vm['__mpKeyPath'][vmData.__ob__.dep.id] = vmData
       } else {
@@ -141,7 +141,7 @@ function minifyDeepData (rootKey, originKey, vmData, data, _mpValueSet, vm) {
   }
 }
 
-function getRootKey (vm, rootKey) {
+function getRootKey(vm, rootKey) {
   if (!vm.$parent.$attrs) {
     rootKey = '$root.0' + KEY_SEP + rootKey
     return rootKey
@@ -151,7 +151,10 @@ function getRootKey (vm, rootKey) {
   }
 }
 
-export function diffData (vm, data) {
+// diff 就是一层一层比较，避免不了
+// vue 数据可能来源于 props，所以会有 state + props 的比较
+// 比较过程会填充 传入的空 data
+export function diffData(vm, data) {
   const vmData = vm._data || {}
   const vmProps = vm._props || {}
   let rootKey = ''

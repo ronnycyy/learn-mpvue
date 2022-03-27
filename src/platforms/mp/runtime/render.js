@@ -23,7 +23,7 @@ import { diffData } from './diff-data'
 
 const KEY_SEP = '_'
 
-function getVmData (vm) {
+function getVmData(vm) {
   // 确保当前 vm 所有数据被同步
   const dataKeys = [].concat(
     Object.keys(vm._data || {}),
@@ -37,7 +37,7 @@ function getVmData (vm) {
   }, {})
 }
 
-function getParentComKey (vm, res = []) {
+function getParentComKey(vm, res = []) {
   const { $parent } = vm || {}
   if (!$parent) return res
   res.unshift(getComKey($parent))
@@ -47,7 +47,7 @@ function getParentComKey (vm, res = []) {
   return res
 }
 
-function formatVmData (vm) {
+function formatVmData(vm) {
   const $p = getParentComKey(vm).join(KEY_SEP)
   const $k = $p + ($p ? KEY_SEP : '') + getComKey(vm)
 
@@ -59,7 +59,7 @@ function formatVmData (vm) {
   return res
 }
 
-function collectVmData (vm, res = {}) {
+function collectVmData(vm, res = {}) {
   const { $children: vms } = vm
   if (vms && vms.length) {
     vms.forEach(v => collectVmData(v, res))
@@ -77,14 +77,14 @@ function collectVmData (vm, res = {}) {
  *                                如果想忽略结尾边界上的调用，传入{trailing: false}
  * @return {function}             返回客户调用函数
  */
-function throttle (func, wait, options) {
+function throttle(func, wait, options) {
   let context, args, result
   let timeout = null
   // 上次执行时间点
   let previous = 0
   if (!options) options = {}
   // 延迟执行函数
-  function later () {
+  function later() {
     // 若设定了开始边界不执行选项，上次执行时间始终为0
     previous = options.leading === false ? 0 : Date.now()
     timeout = null
@@ -107,7 +107,7 @@ function throttle (func, wait, options) {
       previous = now
       result = func.apply(context, args)
       if (!timeout) context = args = null
-    // 如果延迟执行不存在，且没有设定结尾边界不执行选项
+      // 如果延迟执行不存在，且没有设定结尾边界不执行选项
     } else if (!timeout && options.trailing !== false) {
       timeout = setTimeout(later, remaining)
     }
@@ -123,7 +123,7 @@ const throttleSetData = throttle((handle, data) => {
   handle(data)
 }, 50)
 
-function getPage (vm) {
+function getPage(vm) {
   const rootVueVM = vm.$root
   const { mpType = '', page } = rootVueVM.$mp || {}
 
@@ -136,23 +136,27 @@ function getPage (vm) {
 
 // 优化js变量动态变化时候引起全量更新
 // 优化每次 setData 都传递大量新数据
-export function updateDataToMP () {
-  const page = getPage(this)
+// vue数据变化 给到 wx数据变化
+export function updateDataToMP() {
+  // 拿到 vue 实例，数据变化的 page
+  const page = getPage(this)  // this: vue实例
   if (!page) {
     return
   }
 
+  // 空 data，用于对比生成新的 data
   const data = {}
   diffData(this, data)
   throttleSetData(page.setData.bind(page), data)
 }
 
-export function initDataToMP () {
+export function initDataToMP() {
   const page = getPage(this)
   if (!page) {
     return
   }
-
+  // app 第一次 挂载时 数据传递
+  // 拿到page，获取整个vue的所有数据，调用 setData
   const data = collectVmData(this.$root)
   page.setData(data)
 }

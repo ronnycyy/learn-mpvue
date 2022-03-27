@@ -2,7 +2,7 @@ import { getComKey, eventTypeMap } from '../util/index'
 import { noop } from 'shared/util'
 
 // 虚拟dom的compid与真实dom的comkey匹配，多层嵌套的先补齐虚拟dom的compid直到完全匹配为止
-function isVmKeyMatchedCompkey (k, comkey) {
+function isVmKeyMatchedCompkey(k, comkey) {
   if (!k || !comkey) {
     return false
   }
@@ -12,7 +12,8 @@ function isVmKeyMatchedCompkey (k, comkey) {
   return comkey === k || comkey.indexOf(k + KEY_SEP) === 0
 }
 
-function getVM (vm, comkeys = []) {
+// 通过vm拿到组件实例
+function getVM(vm, comkeys = []) {
   const keys = comkeys.slice(1)
   if (!keys.length) return vm
 
@@ -38,7 +39,7 @@ function getVM (vm, comkeys = []) {
   }, vm)
 }
 
-function getHandle (vnode, eventid, eventTypes = []) {
+function getHandle(vnode, eventid, eventTypes = []) {
   let res = []
   if (!vnode || !vnode.tag) {
     return res
@@ -78,7 +79,7 @@ function getHandle (vnode, eventid, eventTypes = []) {
   return res
 }
 
-function getWebEventByMP (e) {
+function getWebEventByMP(e) {
   const { type, timeStamp, touches, detail = {}, target = {}, currentTarget = {} } = e
   const { x, y } = detail
   const event = {
@@ -101,18 +102,23 @@ function getWebEventByMP (e) {
 }
 
 const KEY_SEP = '_'
-export function handleProxyWithVue (e) {
+
+// 打包后，事件统一到 handleProxy
+export function handleProxyWithVue(e) {
   const rootVueVM = this.$root
   const { type, target = {}, currentTarget } = e
   const { dataset = {} } = currentTarget || target
+  // 组件id 和 事件id
   const { comkey = '', eventid } = dataset
   const vm = getVM(rootVueVM, comkey.split(KEY_SEP))
 
   if (!vm) {
     return
   }
-
+  // 获取代理事件类型 (web event)
   const webEventTypes = eventTypeMap[type] || [type]
+  // 获取对应的具体业务逻辑
+  // 去 vue 实例上找事件
   const handles = getHandle(vm._vnode, eventid, webEventTypes)
 
   // TODO, enevt 还需要处理更多
@@ -120,6 +126,8 @@ export function handleProxyWithVue (e) {
   if (handles.length) {
     const event = getWebEventByMP(e)
     if (handles.length === 1) {
+      // 有事件，直接执行
+      // 数据发生变化 => render => patch => 拦截 patch => setData (this.$updateDataToMP )
       const result = handles[0](event)
       return result
     }

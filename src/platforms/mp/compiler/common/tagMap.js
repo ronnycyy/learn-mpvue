@@ -1,3 +1,4 @@
+// Oh, my God    vue 标签转 wx 标签
 export default {
   'br': 'view',
   'hr': 'view',

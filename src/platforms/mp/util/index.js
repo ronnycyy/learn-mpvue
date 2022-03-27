@@ -68,6 +68,7 @@ function isObject (obj) {
   return (typeof obj === 'object') && obj !== null
 }
 
+// mpvue深拷贝
 export function cloneDeep (data, hash = new WeakMap()) {
   if (!isObject(data) || !data || !data.constructor) {
     return data

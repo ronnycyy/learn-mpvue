@@ -1,0 +1,114 @@
+{
+	"files": [
+		{
+			"path": "src/platforms/mp/compiler/index.js",
+			"bookmarks": [
+				{
+					"line": 16,
+					"column": 14,
+					"label": "vue template 转 wxml"
+				}
+			]
+		},
+		{
+			"path": "src/platforms/mp/compiler/common/generate.js",
+			"bookmarks": [
+				{
+					"line": 16,
+					"column": 3,
+					"label": "vue 指令转 wx 指令"
+				}
+			]
+		},
+		{
+			"path": "src/platforms/mp/compiler/common/tagMap.js",
+			"bookmarks": [
+				{
+					"line": 0,
+					"column": 17,
+					"label": "vue 标签转 wx 标签"
+				}
+			]
+		},
+		{
+			"path": "src/platforms/mp/runtime/index.js",
+			"bookmarks": [
+				{
+					"line": 2,
+					"column": 14,
+					"label": "核心: mpvue 运行时接入"
+				}
+			]
+		},
+		{
+			"path": "src/platforms/mp/runtime/patch.js",
+			"bookmarks": [
+				{
+					"line": 18,
+					"column": 39,
+					"label": "this.setData 打数据的时候，就把数据给到 mpvue 里"
+				}
+			]
+		},
+		{
+			"path": "src/platforms/mp/runtime/lifecycle.js",
+			"bookmarks": [
+				{
+					"line": 174,
+					"column": 3,
+					"label": "链接 vue 与 小程序 初始化过程的生命周期调用"
+				},
+				{
+					"line": 202,
+					"column": 3,
+					"label": "对齐 Vue 与 wx 的生命周期"
+				},
+				{
+					"line": 269,
+					"column": 9,
+					"label": "事件处理"
+				}
+			]
+		},
+		{
+			"path": "src/platforms/mp/runtime/render.js",
+			"bookmarks": [
+				{
+					"line": 138,
+					"column": 3,
+					"label": "vue数据变化 给到 wx数据变化"
+				},
+				{
+					"line": 157,
+					"column": 5,
+					"label": "app 第一次 挂载时 数据传递"
+				}
+			]
+		},
+		{
+			"path": "src/platforms/mp/util/index.js",
+			"bookmarks": [
+				{
+					"line": 48,
+					"column": 5,
+					"label": "小程序的 event type 到 web 的 event"
+				},
+				{
+					"line": 70,
+					"column": 3,
+					"label": "mpvue深拷贝"
+				}
+			]
+		},
+		{
+			"path": "src/platforms/mp/runtime/diff-data.js",
+			"bookmarks": [
+				{
+					"line": 153,
+					"column": 3,
+					"label": "diff 就是一层一层比较，避免不了"
+				}
+			]
+		}
+	]
+}

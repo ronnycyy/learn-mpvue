@@ -14,7 +14,8 @@ const modules = [ref]
 
 export const corePatch: Function = createPatchFunction({ nodeOps, modules })
 
-export function patch () {
+export function patch() {
   corePatch.apply(this, arguments)
+  // this.setData 打数据的时候，就把数据给到 mpvue 里
   this.$updateDataToMP()
 }

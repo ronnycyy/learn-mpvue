@@ -14,6 +14,7 @@ function convertAttr (key, val) {
   return (val === '' || typeof val === 'undefined') ? key : `${key}="${val}"`
 }
 
+// vue 指令转 wx 指令
 function generateCode (nodeAst, options = {}) {
   const { tag, attrsMap = {}, children = [], text, ifConditions = [] } = nodeAst
   if (!tag) {
